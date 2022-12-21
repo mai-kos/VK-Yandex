@@ -1,5 +1,6 @@
 import requests
 from pprint import pprint
+import json
 
 class VK:
 
@@ -25,10 +26,26 @@ class VK:
         response = requests.get(url, params={**self.params, **params})
         return response.json()
 
+    def log_photos_data(self, class_instance):
+        json_data = {'items': []}
+        photos = class_instance.get_photos()['response']['items']
+        for el in photos:
+            likes = el['likes']['count']
+            name = f'{likes}.jpg'
+            size = el['sizes'][-1]['type']
+            photo_data = {
+                'file_name': name,
+                'size': size
+            }
+            json_data['items'].append(photo_data)
+        with open('photos.json', 'w') as f:
+            json.dump(json_data, f, indent=2)
+        return
+
 
 with open('token.txt', 'rt') as file:
     access_token = file.readline() 
 
 user_id = '8841655'
 vk = VK(access_token, user_id)
-pprint(vk.get_photos())
+vk.log_photos_data(vk)
