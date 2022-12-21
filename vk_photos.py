@@ -1,5 +1,4 @@
 import requests
-from pprint import pprint
 import json
 
 class VK:
@@ -41,11 +40,3 @@ class VK:
         with open('photos.json', 'w') as f:
             json.dump(json_data, f, indent=2)
         return
-
-
-with open('token.txt', 'rt') as file:
-    access_token = file.readline() 
-
-user_id = '8841655'
-vk = VK(access_token, user_id)
-vk.log_photos_data(vk)
