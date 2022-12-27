@@ -1,5 +1,6 @@
 import requests
 import json
+from pprint import pprint
 
 class VK:
 
@@ -31,12 +32,16 @@ class VK:
         for el in photos:
             likes = el['likes']['count']
             name = f'{likes}.jpg'
+            date = el['date']
+            for line in json_data['items']:
+                if line['file_name'] == name:
+                    name = f'{date}.jpg'
             size = el['sizes'][-1]['type']
             photo_data = {
                 'file_name': name,
-                'size': size
+                'size': size 
             }
             json_data['items'].append(photo_data)
         with open('photos.json', 'w') as f:
             json.dump(json_data, f, indent=2)
-        return
+        return json_data
