@@ -1,6 +1,6 @@
 import requests
 import json
-from pprint import pprint
+import time
 
 class VK:
 
@@ -32,10 +32,11 @@ class VK:
         for el in photos:
             likes = el['likes']['count']
             name = f'{likes}.jpg'
-            date = el['date']
+            epoch_date = el['date']
+            my_date = time.strftime('%Y-%m-%d', time.localtime(epoch_date))
             for line in json_data['items']:
                 if line['file_name'] == name:
-                    name = f'{date}.jpg'
+                    name = f'{my_date}.jpg'
             size = el['sizes'][-1]['type']
             photo_data = {
                 'file_name': name,
