@@ -1,4 +1,6 @@
 import requests
+import json
+from tqdm import tqdm, trange 
 
 class Yandex:
     def __init__(self, token: str):
@@ -17,25 +19,24 @@ class Yandex:
         response = requests.get(upload_url, headers=headers, params=params)
         return response.json()
 
-    # def create_folder(self, disk_file_path):
-    #     upload_url = 'https://cloud-api.yandex.net/v1/disk/resources/'
-    #     headers = self.get_headers()
-    #     params = {'path': disk_file_path}
-    #     response = requests.put(upload_url, headers=headers, params=params)
-    #     return disk_file_path
+    def create_folder(self, folder_name):
+        upload_url = 'https://cloud-api.yandex.net/v1/disk/resources/'
+        headers = self.get_headers()
+        params = {'path': folder_name}
+        response = requests.put(upload_url, headers=headers, params=params)
+        return folder_name
 
-    # def upload_photos(self, disk_file_path, filename):
-    #     href = self._get_upload_link(disk_file_path=disk_file_path).get('href', '')
-    #     response = requests.put(href, data=open(filename, 'r'))
-    #     response.raise_for_status()
-    #     if response.status_code == 202:
-    #         print('Success')
-
-    def upload_photos(self, disk_file_path, url):
+    def upload_photos(self, folder):
         upload_url = 'https://cloud-api.yandex.net/v1/disk/resources/upload'
         headers = self.get_headers()
-        params = {'url': url, 'path': disk_file_path}
-        response = requests.post(upload_url, headers=headers, params=params)
-        response.raise_for_status()
-        if response.status_code == 202:
-            print('Success')
+        with open('photos_urls.txt', 'r') as file_1, open('photos.json', 'r') as file_2:
+            data = json.loads(file_2.read())
+            for el in data['items']:
+                name = el['file_name']
+                url = file_1.readline().strip()
+                disk_file_path = f'{folder}/{name}'
+                params = {'url': url, 'path': disk_file_path}
+                response = requests.post(upload_url, headers=headers, params=params)
+                response.raise_for_status()
+                if response.status_code == 202:
+                    print('Success')

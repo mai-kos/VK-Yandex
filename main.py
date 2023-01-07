@@ -15,8 +15,8 @@ if __name__ == '__main__':
     my_vk = vk_photos.VK(vk_access_token, vk_user_id)
     pprint(my_vk.log_photos_data(my_vk))
     print()
-    pprint(my_vk.get_photos())
+    # pprint(my_vk.get_photos())
 
     my_disk = ya_uploader.Yandex(ya_access_token)
     # my_disk.create_folder('VK_photos')
-    my_disk.upload_photos('VK_photos/1.jpg', 'https://sun9-83.userapi.com/c10534/u8841655/-6/x_ce4f3eb9.jpg')
+    my_disk.upload_photos('VK_photos')

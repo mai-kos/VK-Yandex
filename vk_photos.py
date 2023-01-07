@@ -29,6 +29,7 @@ class VK:
     def log_photos_data(self, class_instance):
         json_data = {'items': []}
         photos = class_instance.get_photos()['response']['items']
+        url_list = []
         for el in photos:
             likes = el['likes']['count']
             name = f'{likes}.jpg'
@@ -38,11 +39,15 @@ class VK:
                 if line['file_name'] == name:
                     name = f'{my_date}.jpg'
             size = el['sizes'][-1]['type']
+            url = el['sizes'][-1]['url']
+            url_list.append(f'{url} \n')
             photo_data = {
                 'file_name': name,
                 'size': size 
             }
             json_data['items'].append(photo_data)
+            with open('photos_urls.txt', 'w') as txt_urls:
+                txt_urls.writelines(url_list)
         with open('photos.json', 'w') as f:
             json.dump(json_data, f, indent=2)
         return json_data
