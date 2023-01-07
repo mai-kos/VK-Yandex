@@ -19,6 +19,7 @@ class VK:
     def get_photos(self, count=5):
         url = 'https://api.vk.com/method/photos.get'
         params = {
+            'owner_id': self.id,
             'album_id': 'profile',
             'extended': True,
             'count': count            
