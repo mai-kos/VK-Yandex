@@ -1,6 +1,6 @@
 import requests
 import json
-from tqdm import tqdm, trange 
+from tqdm import tqdm 
 
 class Yandex:
     def __init__(self, token: str):
@@ -31,7 +31,7 @@ class Yandex:
         headers = self.get_headers()
         with open('photos_urls.txt', 'r') as file_1, open('photos.json', 'r') as file_2:
             data = json.loads(file_2.read())
-            for el in data['items']:
+            for el in tqdm(data['items'], desc='Uploading files', ncols=100):
                 name = el['file_name']
                 url = file_1.readline().strip()
                 disk_file_path = f'{folder}/{name}'
@@ -39,4 +39,4 @@ class Yandex:
                 response = requests.post(upload_url, headers=headers, params=params)
                 response.raise_for_status()
                 if response.status_code == 202:
-                    print('Success')
+                    continue
