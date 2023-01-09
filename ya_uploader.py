@@ -40,3 +40,4 @@ class Yandex:
                 response.raise_for_status()
                 if response.status_code == 202:
                     continue
+        print('The files have been successfully uploaded to your disk!')
