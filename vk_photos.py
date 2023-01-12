@@ -16,20 +16,20 @@ class VK:
         response = requests.get(url, params={**self.params, **params})
         return response.json()
 
-    def get_photos(self, count=5):
+    def get_photos(self, count=5, album_id='profile'):
         url = 'https://api.vk.com/method/photos.get'
         params = {
             'owner_id': self.id,
-            'album_id': 'profile',
+            'album_id': album_id,
             'extended': True,
             'count': count            
         }
         response = requests.get(url, params={**self.params, **params})
         return response.json()
 
-    def log_photos_data(self, class_instance):
+    def log_photos_data(self, class_instance, count=5, album_id='profile'):
         json_data = {'items': []}
-        photos = class_instance.get_photos()['response']['items']
+        photos = class_instance.get_photos(count=count, album_id=album_id)['response']['items']
         url_list = []
         for el in photos:
             likes = el['likes']['count']
